@@ -1,9 +1,12 @@
 package com.floriantoenjes.instateam.model;
 
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
+@Entity
 public class Collaborator {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
