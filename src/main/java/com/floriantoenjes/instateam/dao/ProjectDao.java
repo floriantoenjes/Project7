@@ -7,4 +7,5 @@ import java.util.List;
 public interface ProjectDao {
     List<Project> findAll();
     Project findById(int id);
+    void save(Project project);
 }
