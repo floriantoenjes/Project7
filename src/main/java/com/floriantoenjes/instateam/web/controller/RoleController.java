@@ -12,7 +12,6 @@ import java.util.List;
 
 @Controller
 public class RoleController {
-
     @Autowired
     RoleService roleService;
 
