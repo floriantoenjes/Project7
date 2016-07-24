@@ -1,17 +1,35 @@
 package com.floriantoenjes.instateam.dao;
 
 import com.floriantoenjes.instateam.model.Role;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class RoleDaoImpl implements RoleDao {
+    @Autowired
+    private SessionFactory sessionFactory;
+
     @Override
     public List<Role> findAll() {
-        return null;
+        Session session = sessionFactory.openSession();
+        return session.createCriteria(Role.class).list();
     }
 
     @Override
     public Role findById(int id) {
         return null;
+    }
+
+    @Override
+    public void save(Role role) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.save(role);
+        session.getTransaction().commit();
+        session.close();
     }
 }

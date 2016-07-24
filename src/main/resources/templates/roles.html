@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="x-ua-compatible" content="ie=edge"/>
+        <title>InstaTeam</title>
+        <link href='https://fonts.googleapis.com/css?family=Inconsolata:400,700' rel='stylesheet' type='text/css'/>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+        <link rel="stylesheet" href="css/normalize.css"/>
+        <link rel="stylesheet" href="css/site.css"/>
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <div class="site-header">
+                    <a class="logo" href="index.html">InstaTeam</a>
+                    <a class="new-project button icon-left" href="#"><i class="material-icons">add</i> New Project</a>
+                </div>
+            </div>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Projects</a></li>
+                <li><a href="collaborators.html">Collaborators</a></li>
+                <li class="selected"><a href="roles.html">Roles</a></li>
+            </ul>
+        </nav>
+        <section>
+            <div class="container wrapper">
+                <form th:object="${role}" action="" method="post">
+                    <h2>Manage Roles</h2>
+                    <div>
+                        <ul class="checkbox-list">
+                            <li th:each="rle : ${roles}"><span th:text="${rle.name}" class="primary"></span></li>
+                        </ul>
+                    </div>
+                    <div class="actions add-new-role">
+                        <input type="text" th:field="*{name}" placeholder="New Role..."/>
+                        <!--<input type="submit" value="Add" class="button"/>-->
+                        <a class="button" href="">Add</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </body>
+</html>
