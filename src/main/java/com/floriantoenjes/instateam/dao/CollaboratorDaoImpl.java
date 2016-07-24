@@ -15,7 +15,8 @@ public class CollaboratorDaoImpl implements CollaboratorDao {
 
     @Override
     public List<Collaborator> findAll() {
-        return null;
+        Session session = sessionFactory.openSession();
+        return session.createCriteria(Collaborator.class).list();
     }
 
     @Override

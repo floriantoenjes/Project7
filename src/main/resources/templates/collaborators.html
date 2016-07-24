@@ -45,7 +45,10 @@
                     </ul>
                     <div class="actions add-new-collaborator">
                         <input type="text" th:field="*{name}" placeholder="Name..."/>
-                        <input type="text" th:field="*{role}" placeholder="Role..."/>
+                        <!--<input type="text" th:field="*{role.id}" placeholder="Role..."/>-->
+                        <select th:field="*{role.id}">
+                            <option th:each="rle : ${roles}" th:value="${rle.id}" th:text="${rle.name}"></option>
+                        </select>
                         <button type="submit">Add</button>
                         <!--<a class="button" href="#">Add</a>-->
                     </div>

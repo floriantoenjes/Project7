@@ -14,7 +14,7 @@ public class CollaboratorServiceImpl implements CollaboratorService {
 
     @Override
     public List<Collaborator> findAll() {
-        return null;
+        return collaboratorDao.findAll();
     }
 
     @Override
