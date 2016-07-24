@@ -16,7 +16,9 @@ public class RoleDaoImpl implements RoleDao {
     @Override
     public List<Role> findAll() {
         Session session = sessionFactory.openSession();
-        return session.createCriteria(Role.class).list();
+        List<Role> roles = session.createCriteria(Role.class).list();
+        session.close();
+        return roles;
     }
 
     @Override

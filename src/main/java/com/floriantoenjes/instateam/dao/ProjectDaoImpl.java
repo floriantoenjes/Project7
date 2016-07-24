@@ -15,7 +15,10 @@ public class ProjectDaoImpl implements ProjectDao {
 
     @Override
     public List<Project> findAll() {
-        return null;
+        Session session = sessionFactory.openSession();
+        List<Project> projects = session.createCriteria(Project.class).list();
+        session.close();
+        return projects;
     }
 
     @Override

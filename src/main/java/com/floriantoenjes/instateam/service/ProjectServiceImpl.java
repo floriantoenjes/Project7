@@ -14,7 +14,7 @@ public class ProjectServiceImpl implements ProjectService{
 
     @Override
     public List<Project> findAll() {
-        return null;
+        return projectDao.findAll();
     }
 
     @Override
