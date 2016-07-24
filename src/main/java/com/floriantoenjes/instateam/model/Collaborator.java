@@ -11,7 +11,7 @@ public class Collaborator {
 
     private String name;
 
-    @OneToMany
+    @ManyToOne
     private Role role;
 
     public Collaborator() {
