@@ -1,6 +1,7 @@
 package com.floriantoenjes.instateam.dao;
 
 import com.floriantoenjes.instateam.model.Project;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,12 @@ public class ProjectDaoImpl implements ProjectDao {
 
     @Override
     public Project findById(int id) {
-        return null;
+        Session session = sessionFactory.openSession();
+        Project project = session.get(Project.class, id);
+        Hibernate.initialize(project.getRolesNeeded());
+        Hibernate.initialize(project.getCollaborators());
+        session.close();
+        return project;
     }
 
     @Override

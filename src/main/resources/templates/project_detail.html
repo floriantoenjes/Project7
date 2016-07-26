@@ -29,27 +29,15 @@
             <div class="container wrapper">
                 <div class="project-list single">
                     <div class="project">
-                        <h2>Website Project</h2>
-                        <p>Design and build a custom website</p>
-                        <span class="tag active">Active</span>
+                        <h2 th:text="${project.name}">Website Project</h2>
+                        <p th:text="${project.description}">Design and build a custom website</p>
+                        <span th:class="tag + ${project.status}" th:text="${project.status}">Active</span>
                     </div>
                     <div class="roles-collaborators">
                         <h3>Roles &amp; Collaborators</h3>
-                        <div class="list-item">
-                            <span class="primary">Developer</span>
+                        <div th:each="role : ${project.rolesNeeded}" class="list-item">
+                            <span class="primary" th:text="${role.name}">Developer</span>
                             <span class="secondary">Michael Pemulis</span>
-                        </div>
-                        <div class="list-item">
-                            <span class="primary">Designer</span>
-                            <span class="secondary">Don Gately</span>
-                        </div>
-                        <div class="list-item">
-                            <span class="primary">QA</span>
-                                <span class="secondary">Joelle Van Dyne</span>
-                            </div>
-                        <div class="list-item">
-                            <span class="primary">DevOps</span>
-                            <span class="secondary">[Unassigned]</span>
                         </div>
                     </div>
                     <div class="actions">

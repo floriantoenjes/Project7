@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,7 +57,9 @@ public class ProjectController {
     }
 
     @RequestMapping("/project/{id}")
-    public String projectDetail() {
+    public String projectDetail(@PathVariable Integer id, Model model) {
+        Project project = projectService.findById(id);
+        model.addAttribute("project", project);
         return "project_detail";
     }
 
