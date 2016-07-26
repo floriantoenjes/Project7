@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -64,18 +65,21 @@ public class ProjectController {
     }
 
     @RequestMapping("/project/{id}/collaborators")
-    public String projectCollaborators() {
+    public String projectCollaborators(@PathVariable Integer id, Model model) {
+        Project project = projectService.findById(id);
+        model.addAttribute("project", project);
         return "project_collaborators";
     }
 
+
     private List<Role> parseRoles(String roles) {
-        List<Role> rolesNeeded = new ArrayList<>();
         String[] roleIds = roles.split(",");
-        for (String roleId : roleIds) {
+        List<Role> rolesNeeded = new ArrayList<>();
+        Arrays.stream(roleIds).forEach( (roleId) -> {
             int id = Integer.parseInt(roleId);
             Role role = roleService.findById(id);
             rolesNeeded.add(role);
-        }
+        });
         return rolesNeeded;
     }
 

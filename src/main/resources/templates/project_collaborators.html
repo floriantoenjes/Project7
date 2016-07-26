@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
     <head>
         <meta charset="utf-8"/>
         <meta http-equiv="x-ua-compatible" content="ie=edge"/>
@@ -30,39 +30,11 @@
                 <form>
                     <label>Edit Collaborators: Website Project</label>
                     <ul class="checkbox-list">
-                        <li><span class="primary">Developer</span>
+                        <li th:each="role : ${project.rolesNeeded}"><span class="primary" th:text="${role.name}">Developer</span>
                             <div class="custom-select">
                                 <span class="dropdown-arrow"></span>
                                 <select>
-                                    <option value="#">Michael Pemulis</option>
-                                    <option value="#">Name</option>
-                                </select>
-                            </div>
-                        </li>
-                        <li><span class="primary">Designer</span>
-                            <div class="custom-select">
-                                <span class="dropdown-arrow"></span>
-                                <select>
-                                    <option value="#">Don Gately</option>
-                                    <option value="#">Name</option>
-                                </select>
-                            </div>
-                        </li>
-                        <li><span class="primary">QA</span>
-                            <div class="custom-select">
-                                <span class="dropdown-arrow"></span>
-                                <select>
-                                    <option value="#">Joelle Van Dyne</option>
-                                    <option value="#">Name</option>
-                                </select>
-                            </div>
-                        </li>
-                        <li><span class="primary">DevOps</span>
-                            <div class="custom-select">
-                                <span class="dropdown-arrow"></span>
-                                <select>
-                                    <option value="#">Choose...</option>
-                                    <option value="#">Name</option>
+                                    <option th:each="collaborator : ${project.collaborators}" th:text="${collaborator.name}" value="#">Michael Pemulis</option>
                                 </select>
                             </div>
                         </li>
