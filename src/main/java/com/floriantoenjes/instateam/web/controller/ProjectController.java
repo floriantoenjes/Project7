@@ -89,8 +89,12 @@ public class ProjectController {
             project.getCollaborators().add(collaborator);
             System.out.println("Added " + collaborator.getName() + " to project " + project.getName());
         });
+        projectService.save(project);
+
         return String.format("redirect:/project/%s", id);
     }
+
+    //Todo: Collaboratoren ohne rolle für Project erstellen und dann rolle assignen
 
     private List<Role> parseRoles(String roles) {
         String[] roleIds = roles.split(",");
