@@ -63,6 +63,11 @@ public class ProjectController {
         return "project_detail";
     }
 
+    @RequestMapping("/project/{id}/collaborators")
+    public String projectCollaborators() {
+        return "project_collaborators";
+    }
+
     private List<Role> parseRoles(String roles) {
         List<Role> rolesNeeded = new ArrayList<>();
         String[] roleIds = roles.split(",");
