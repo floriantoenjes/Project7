@@ -55,6 +55,11 @@ public class ProjectController {
         return "redirect:/index";
     }
 
+    @RequestMapping("/project/{id}")
+    public String projectDetail() {
+        return "project_detail";
+    }
+
     private List<Role> parseRoles(String roles) {
         List<Role> rolesNeeded = new ArrayList<>();
         String[] roleIds = roles.split(",");
