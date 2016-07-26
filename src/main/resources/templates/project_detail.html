@@ -35,9 +35,9 @@
                     </div>
                     <div class="roles-collaborators">
                         <h3>Roles &amp; Collaborators</h3>
-                        <div th:each="role : ${project.rolesNeeded}" class="list-item">
-                            <span class="primary" th:text="${role.name}">Developer</span>
-                            <span class="secondary">Michael Pemulis</span>
+                        <div th:each="entry : ${rolab}" class="list-item">
+                            <span class="primary" th:text="${entry.key.name}">Developer</span>
+                            <span class="secondary" th:text="${entry.value.name}">Michael Pemulis</span>
                         </div>
                     </div>
                     <div class="actions">

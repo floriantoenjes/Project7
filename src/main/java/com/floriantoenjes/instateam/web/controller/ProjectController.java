@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class ProjectController {
@@ -58,7 +55,9 @@ public class ProjectController {
             System.out.println();
             return "redirect:/add";
         }
-        project.setRolesNeeded(parseRoles(roles));
+        List<Role> rolesNeeded = parseRoles(roles);
+        project.setRolesNeeded(rolesNeeded);
+
         projectService.save(project);
         return "redirect:/index";
     }
@@ -66,7 +65,26 @@ public class ProjectController {
     @RequestMapping("/project/{id}")
     public String projectDetail(@PathVariable Integer id, Model model) {
         Project project = projectService.findById(id);
+
+        List<Role> roles = project.getRolesNeeded();
+        List<Collaborator> collaborators = project.getCollaborators();
+        Map<Role, Collaborator> rolab = new HashMap<>();
+
+        roleLoop:
+        for (Role role : roles) {
+            for (Collaborator collaborator : collaborators) {
+                if (role.equals(collaborator.getRole())) {
+                    rolab.put(role, collaborator);
+                    continue roleLoop;
+                }
+            }
+            Collaborator unassigned = new Collaborator();
+            unassigned.setName("Unassigned");
+            rolab.put(role, unassigned);
+        }
+
         model.addAttribute("project", project);
+        model.addAttribute("rolab", rolab);
         return "project_detail";
     }
 
@@ -82,7 +100,6 @@ public class ProjectController {
     @RequestMapping(value = "/project/{id}/collaborators", method = RequestMethod.POST)
     public String assignCollaborators(@RequestParam Map<String, String> params, @PathVariable Integer id) {
         Project project = projectService.findById(id);
-//        params.forEach( (k, v) -> System.out.printf("%nKey: %s | Value: %s%n%n", k, v));
         params.forEach( (key, value) -> {
             int collaboratorId = Integer.parseInt(value);
             Collaborator collaborator = collaboratorService.findById(collaboratorId);
@@ -93,8 +110,6 @@ public class ProjectController {
 
         return String.format("redirect:/project/%s", id);
     }
-
-    //Todo: Collaboratoren ohne rolle für Project erstellen und dann rolle assignen
 
     private List<Role> parseRoles(String roles) {
         String[] roleIds = roles.split(",");

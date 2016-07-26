@@ -1,6 +1,7 @@
 package com.floriantoenjes.instateam.model;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.List;
 
 @Entity
@@ -69,4 +70,5 @@ public class Project {
     public void setCollaborators(List<Collaborator> collaborators) {
         this.collaborators = collaborators;
     }
+
 }
