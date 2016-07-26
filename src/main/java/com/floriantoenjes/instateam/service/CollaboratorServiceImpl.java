@@ -19,7 +19,7 @@ public class CollaboratorServiceImpl implements CollaboratorService {
 
     @Override
     public Collaborator findById(int id) {
-        return null;
+        return collaboratorDao.findById(id);
     }
 
     @Override

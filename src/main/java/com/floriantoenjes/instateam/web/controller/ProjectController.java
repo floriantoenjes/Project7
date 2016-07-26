@@ -1,7 +1,9 @@
 package com.floriantoenjes.instateam.web.controller;
 
+import com.floriantoenjes.instateam.model.Collaborator;
 import com.floriantoenjes.instateam.model.Project;
 import com.floriantoenjes.instateam.model.Role;
+import com.floriantoenjes.instateam.service.CollaboratorService;
 import com.floriantoenjes.instateam.service.ProjectService;
 import com.floriantoenjes.instateam.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ProjectController {
@@ -24,6 +27,9 @@ public class ProjectController {
 
     @Autowired
     RoleService roleService;
+
+    @Autowired
+    CollaboratorService collaboratorService;
 
     @RequestMapping("/index")
     public String listProjects(Model model) {
@@ -67,10 +73,24 @@ public class ProjectController {
     @RequestMapping("/project/{id}/collaborators")
     public String projectCollaborators(@PathVariable Integer id, Model model) {
         Project project = projectService.findById(id);
+        List<Collaborator> collaborators = collaboratorService.findAll();
         model.addAttribute("project", project);
+        model.addAttribute("collaborators", collaborators);
         return "project_collaborators";
     }
 
+    @RequestMapping(value = "/project/{id}/collaborators", method = RequestMethod.POST)
+    public String assignCollaborators(@RequestParam Map<String, String> params, @PathVariable Integer id) {
+        Project project = projectService.findById(id);
+//        params.forEach( (k, v) -> System.out.printf("%nKey: %s | Value: %s%n%n", k, v));
+        params.forEach( (key, value) -> {
+            int collaboratorId = Integer.parseInt(value);
+            Collaborator collaborator = collaboratorService.findById(collaboratorId);
+            project.getCollaborators().add(collaborator);
+            System.out.println("Added " + collaborator.getName() + " to project " + project.getName());
+        });
+        return String.format("redirect:/project/%s", id);
+    }
 
     private List<Role> parseRoles(String roles) {
         String[] roleIds = roles.split(",");
