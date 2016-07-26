@@ -23,7 +23,10 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public Role findById(int id) {
-        return null;
+        Session session = sessionFactory.openSession();
+        Role role = session.get(Role.class, id);
+        session.close();
+        return role;
     }
 
     @Override

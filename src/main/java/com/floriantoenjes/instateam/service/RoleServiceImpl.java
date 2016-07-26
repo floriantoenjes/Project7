@@ -19,7 +19,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role findById(int id) {
-        return null;
+        return roleDao.findById(id);
     }
 
     @Override
