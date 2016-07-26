@@ -50,6 +50,12 @@ public class ProjectController {
             System.out.println();
             return "redirect:/add";
         }
+        project.setRolesNeeded(parseRoles(roles));
+        projectService.save(project);
+        return "redirect:/index";
+    }
+
+    private List<Role> parseRoles(String roles) {
         List<Role> rolesNeeded = new ArrayList<>();
         String[] roleIds = roles.split(",");
         for (String roleId : roleIds) {
@@ -57,9 +63,7 @@ public class ProjectController {
             Role role = roleService.findById(id);
             rolesNeeded.add(role);
         }
-        project.setRolesNeeded(rolesNeeded);
-        projectService.save(project);
-        return "redirect:/index";
+        return rolesNeeded;
     }
 
 }
