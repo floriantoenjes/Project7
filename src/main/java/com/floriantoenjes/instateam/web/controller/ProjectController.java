@@ -73,7 +73,7 @@ public class ProjectController {
         roleLoop:
         for (Role role : roles) {
             for (Collaborator collaborator : collaborators) {
-                if (role.equals(collaborator.getRole())) {
+                if (role.getId() == collaborator.getRole().getId()) {
                     rolab.put(role, collaborator);
                     continue roleLoop;
                 }
@@ -103,6 +103,14 @@ public class ProjectController {
         params.forEach( (key, value) -> {
             int collaboratorId = Integer.parseInt(value);
             Collaborator collaborator = collaboratorService.findById(collaboratorId);
+            List<Collaborator> collaborators = project.getCollaborators();
+
+            for (Collaborator colabProject : collaborators) {
+                if (colabProject.getId() == collaborator.getId()) {
+                    System.out.println("Did not add " + collaborator.getName());
+                    return;
+                }
+            }
             project.getCollaborators().add(collaborator);
             System.out.println("Added " + collaborator.getName() + " to project " + project.getName());
         });
