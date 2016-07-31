@@ -123,8 +123,7 @@ public class ProjectController {
             for (Collaborator collaborator : collaborators) {
                 if(collaborator.getRole() == null) {
                     continue;
-                }
-                if (collaborator.getRole().getId() == role.getId()) {
+                } else if (collaborator.getRole().getId() == role.getId()) {
                     coList.add(collaborator);
                 }
             }
