@@ -26,8 +26,8 @@
                     <h2>Manage Collaborators</h2>
                     <ul class="checkbox-list">
                         <li th:each="entry : ${roleCollaborators}">
-                            <span class="primary" th:text="${entry.value.name}"></span>
-                            <span th:text="${entry.key.name}"></span>
+                            <a class="primary" th:href="|@{/collaborators/}${entry.key.id}|" th:text="${entry.key.name}"></a>
+                            <span th:text="${entry.value.name}"></span>
                             <!--<div class="custom-select">
                                 <span class="dropdown-arrow"></span>
                                 <select>

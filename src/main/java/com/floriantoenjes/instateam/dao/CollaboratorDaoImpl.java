@@ -33,7 +33,7 @@ public class CollaboratorDaoImpl implements CollaboratorDao {
     public void save(Collaborator collaborator) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.save(collaborator);
+        session.saveOrUpdate(collaborator);
         session.getTransaction().commit();
         session.close();
     }

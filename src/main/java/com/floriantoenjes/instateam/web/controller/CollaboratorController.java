@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -32,14 +33,14 @@ public class CollaboratorController {
         List<Role> roles = roleService.findAll();
 
         // Todo: Add map for collaborator to role
-        Map<Role, Collaborator> roleCollaborators = new HashMap<>();
+        Map<Collaborator, Role> roleCollaborators = new HashMap<>();
         for (Collaborator collab : collaborators) {
             Role role = collab.getRole();
             if (role == null) {
                 role = new Role();
                 role.setName("Undefined");
             }
-            roleCollaborators.put(role, collab);
+            roleCollaborators.put(collab, role);
         }
 
         model.addAttribute("collaborator", new Collaborator());
@@ -61,5 +62,14 @@ public class CollaboratorController {
         }
 
         return "redirect:/collaborators";
+    }
+
+    @RequestMapping("/collaborators/{id}")
+    public String editCollaboratorForm(@PathVariable Integer id, Model model) {
+        Collaborator collaborator = collaboratorService.findById(id);
+        List<Role> roles = roleService.findAll();
+        model.addAttribute("collaborator", collaborator);
+        model.addAttribute("roles", roles);
+        return "collaborator_detail";
     }
 }
