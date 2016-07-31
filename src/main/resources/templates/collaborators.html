@@ -7,6 +7,9 @@
                 <div class="site-header">
                     <a class="logo" href="index.html">InstaTeam</a>
                     <a class="new-project button icon-left" href="/add"><i class="material-icons">add</i> New Project</a>
+                    <div th:if="${flash != null}">
+                        <p th:text="${flash.message}"></p>
+                    </div>
                 </div>
             </div>
         </header>

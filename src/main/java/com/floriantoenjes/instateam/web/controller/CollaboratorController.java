@@ -4,12 +4,14 @@ import com.floriantoenjes.instateam.model.Collaborator;
 import com.floriantoenjes.instateam.model.Role;
 import com.floriantoenjes.instateam.service.CollaboratorService;
 import com.floriantoenjes.instateam.service.RoleService;
+import com.floriantoenjes.instateam.web.FlashMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -35,9 +37,10 @@ public class CollaboratorController {
     }
 
     @RequestMapping(value = "/collaborators", method = RequestMethod.POST)
-    public String addCollaborator(@Valid Collaborator collaborator, BindingResult result) {
+    public String addCollaborator(@Valid Collaborator collaborator, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             result.getAllErrors().forEach(System.out::println);
+            redirectAttributes.addFlashAttribute("flash", new FlashMessage("Failed to add collaborator", FlashMessage.Status.SUCCESS));
         } else {
             collaboratorService.save(collaborator);
         }
