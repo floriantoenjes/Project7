@@ -30,11 +30,11 @@
                 <form action="" method="post">
                     <label>Edit Collaborators: Website Project</label>
                     <ul class="checkbox-list">
-                        <li th:each="role : ${project.rolesNeeded}"><span class="primary" th:text="${role.name}">Developer</span>
+                        <li th:each="entry : ${rocomap}"><span class="primary" th:text="${entry.key.name}">Developer</span>
                             <div class="custom-select">
                                 <span class="dropdown-arrow"></span>
-                                <select th:name="${role.id}">
-                                    <option th:each="collaborator : ${collaborators}" th:text="${collaborator.name}" th:value="${collaborator.id}">Michael Pemulis</option>
+                                <select th:name="${entry.key.id}">
+                                    <option th:each="collaborator : ${entry.value}" th:text="${collaborator.name}" th:value="${collaborator.id}">Michael Pemulis</option>
                                 </select>
                             </div>
                         </li>

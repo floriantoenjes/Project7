@@ -92,14 +92,28 @@ public class ProjectController {
     public String projectCollaborators(@PathVariable Integer id, Model model) {
         Project project = projectService.findById(id);
         List<Collaborator> collaborators = collaboratorService.findAll();
+
+        Map<Role, List<Collaborator>> rocomap = new HashMap<>();
+        for (Role role : project.getRolesNeeded()) {
+            List<Collaborator> coList = new ArrayList<>();
+            for (Collaborator collaborator : collaborators) {
+                if (collaborator.getRole().getId() == role.getId()) {
+                    coList.add(collaborator);
+                }
+            }
+            rocomap.put(role, coList);
+        }
+
         model.addAttribute("project", project);
-        model.addAttribute("collaborators", collaborators);
+        model.addAttribute("rocomap", rocomap);
+//        model.addAttribute("collaborators", collaborators);
         return "project_collaborators";
     }
 
     @RequestMapping(value = "/project/{id}/collaborators", method = RequestMethod.POST)
     public String assignCollaborators(@RequestParam Map<String, String> params, @PathVariable Integer id) {
         Project project = projectService.findById(id);
+        project.setCollaborators(new ArrayList<>());
         params.forEach( (key, value) -> {
             int collaboratorId = Integer.parseInt(value);
             Collaborator collaborator = collaboratorService.findById(collaboratorId);
@@ -111,6 +125,7 @@ public class ProjectController {
                     return;
                 }
             }
+
             project.getCollaborators().add(collaborator);
             System.out.println("Added " + collaborator.getName() + " to project " + project.getName());
         });
