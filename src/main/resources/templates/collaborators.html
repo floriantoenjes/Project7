@@ -2,22 +2,22 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
     <head th:replace="layout :: head('Collaborators')"></head>
     <body>
-        <header>
+    <div th:if="${flash != null}">
+        <p th:text="${flash.message}"></p>
+    </div>
+    <header>
             <div class="container">
                 <div class="site-header">
-                    <a class="logo" href="index.html">InstaTeam</a>
-                    <a class="new-project button icon-left" href="/add"><i class="material-icons">add</i> New Project</a>
-                    <div th:if="${flash != null}">
-                        <p th:text="${flash.message}"></p>
-                    </div>
+                    <a class="logo" th:href="@{/index.html}">InstaTeam</a>
+                    <a class="new-project button icon-left" th:href="@{/add}"><i class="material-icons">add</i> New Project</a>
                 </div>
             </div>
         </header>
         <nav>
             <ul>
-                <li><a href="index.html">Projects</a></li>
-                <li class="selected"><a href="collaborators.html">Collaborators</a></li>
-                <li><a href="roles.html">Roles</a></li>
+                <li><a th:href="@{/index.html}">Projects</a></li>
+                <li class="selected"><a th:href="@{/collaborators.html}">Collaborators</a></li>
+                <li><a th:href="@{/roles.html}">Roles</a></li>
             </ul>
         </nav>
         <section>
@@ -25,14 +25,15 @@
                 <form th:object="${collaborator}" action="" method="post">
                     <h2>Manage Collaborators</h2>
                     <ul class="checkbox-list">
-                        <li th:each="collaborator : ${collaborators}">
-                            <span class="primary" th:text="${collaborator.name}"></span>
-                            <div class="custom-select">
+                        <li th:each="entry : ${roleCollaborators}">
+                            <span class="primary" th:text="${entry.value.name}"></span>
+                            <span th:text="${entry.key.name}"></span>
+                            <!--<div class="custom-select">
                                 <span class="dropdown-arrow"></span>
                                 <select>
                                     <option th:each="rle : ${roles}" value="#" selected="selected" th:text="${rle.name}">Designer</option>
                                 </select>
-                            </div>
+                            </div>-->
                         </li>
                     </ul>
                     <div class="actions add-new-collaborator">

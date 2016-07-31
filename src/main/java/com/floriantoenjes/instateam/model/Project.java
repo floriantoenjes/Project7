@@ -1,5 +1,7 @@
 package com.floriantoenjes.instateam.model;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
 import java.util.HashMap;
 import java.util.List;
@@ -10,10 +12,15 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Length(min = 3, max = 30)
     private String name;
+    @Length(min = 3, max = 255)
     private String description;
     private String status;
 
+
+    // Todo: Not null?
     @ManyToMany
     private List<Role> rolesNeeded;
 

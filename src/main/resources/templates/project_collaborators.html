@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-    <head>
-        <meta charset="utf-8"/>
-        <meta http-equiv="x-ua-compatible" content="ie=edge"/>
-        <title>InstaTeam</title>
-        <link href='https://fonts.googleapis.com/css?family=Inconsolata:400,700' rel='stylesheet' type='text/css'/>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-        <link rel="stylesheet" href="../../css/normalize.css"/>
-        <link rel="stylesheet" href="../../css/site.css"/>
-    </head>
+    <head th:replace="layout :: head('Project Collaborators')"></head>
     <body>
         <header>
             <div class="container">
@@ -20,9 +12,9 @@
         </header>
         <nav>
             <ul>
-                <li class="selected"><a href="index.html">Projects</a></li>
-                <li><a href="collaborators.html">Collaborators</a></li>
-                <li><a href="roles.html">Roles</a></li>
+                <li class="selected"><a th:href="@{/index.html}">Projects</a></li>
+                <li><a th:href="@{/collaborators.html}">Collaborators</a></li>
+                <li><a th:href="@{/roles.html}">Roles</a></li>
             </ul>
         </nav>
         <section>
@@ -30,7 +22,7 @@
                 <form action="" method="post">
                     <label>Edit Collaborators: Website Project</label>
                     <ul class="checkbox-list">
-                        <li th:each="entry : ${rocomap}"><span class="primary" th:text="${entry.key.name}">Developer</span>
+                        <li th:each="entry : ${roleCollaborators}"><span class="primary" th:text="${entry.key.name}">Developer</span>
                             <div class="custom-select">
                                 <span class="dropdown-arrow"></span>
                                 <select th:name="${entry.key.id}">

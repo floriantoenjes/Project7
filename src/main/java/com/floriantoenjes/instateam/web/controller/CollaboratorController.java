@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class CollaboratorController {
@@ -29,9 +31,22 @@ public class CollaboratorController {
         List<Collaborator> collaborators = collaboratorService.findAll();
         List<Role> roles = roleService.findAll();
 
+        // Todo: Add map for collaborator to role
+        Map<Role, Collaborator> roleCollaborators = new HashMap<>();
+        for (Collaborator collab : collaborators) {
+            Role role = collab.getRole();
+            if (role == null) {
+                role = new Role();
+                role.setName("Undefined");
+            }
+            roleCollaborators.put(role, collab);
+        }
+
         model.addAttribute("collaborator", new Collaborator());
-        model.addAttribute("collaborators", collaborators);
+        model.addAttribute("roleCollaborators", roleCollaborators);
+//        model.addAttribute("collaborators", collaborators);
         model.addAttribute("roles", roles);
+
 
         return "collaborators";
     }

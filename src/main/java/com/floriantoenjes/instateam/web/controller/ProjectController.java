@@ -6,6 +6,7 @@ import com.floriantoenjes.instateam.model.Role;
 import com.floriantoenjes.instateam.service.CollaboratorService;
 import com.floriantoenjes.instateam.service.ProjectService;
 import com.floriantoenjes.instateam.service.RoleService;
+import com.floriantoenjes.instateam.web.FlashMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.*;
 
 @Controller
@@ -48,11 +51,14 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addProject(@RequestParam("project_roles") String roles, Project project, BindingResult result) {
+    public String addProject(@RequestParam("project_roles") String roles, @Valid Project project, BindingResult result,
+                             RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             System.out.println("Errors:");
             result.getAllErrors().forEach(System.out::println);
             System.out.println();
+            redirectAttributes.addFlashAttribute("flash", new FlashMessage("Could not create project",
+                    FlashMessage.Status.FAILED));
             return "redirect:/add";
         }
         List<Role> rolesNeeded = parseRoles(roles);
@@ -68,23 +74,23 @@ public class ProjectController {
 
         List<Role> roles = project.getRolesNeeded();
         List<Collaborator> collaborators = project.getCollaborators();
-        Map<Role, Collaborator> rolab = new HashMap<>();
+        Map<Role, Collaborator> roleColab = new HashMap<>();
 
         roleLoop:
         for (Role role : roles) {
             for (Collaborator collaborator : collaborators) {
                 if (role.getId() == collaborator.getRole().getId()) {
-                    rolab.put(role, collaborator);
+                    roleColab.put(role, collaborator);
                     continue roleLoop;
                 }
             }
             Collaborator unassigned = new Collaborator();
             unassigned.setName("Unassigned");
-            rolab.put(role, unassigned);
+            roleColab.put(role, unassigned);
         }
 
         model.addAttribute("project", project);
-        model.addAttribute("rolab", rolab);
+        model.addAttribute("rolecolab", roleColab);
         return "project_detail";
     }
 
@@ -111,20 +117,22 @@ public class ProjectController {
         Project project = projectService.findById(id);
         List<Collaborator> collaborators = collaboratorService.findAll();
 
-        Map<Role, List<Collaborator>> rocomap = new HashMap<>();
+        Map<Role, List<Collaborator>> roleCollaborators = new HashMap<>();
         for (Role role : project.getRolesNeeded()) {
             List<Collaborator> coList = new ArrayList<>();
             for (Collaborator collaborator : collaborators) {
+                if(collaborator.getRole() == null) {
+                    continue;
+                }
                 if (collaborator.getRole().getId() == role.getId()) {
                     coList.add(collaborator);
                 }
             }
-            rocomap.put(role, coList);
+            roleCollaborators.put(role, coList);
         }
 
         model.addAttribute("project", project);
-        model.addAttribute("rocomap", rocomap);
-//        model.addAttribute("collaborators", collaborators);
+        model.addAttribute("roleCollaborators", roleCollaborators);
         return "project_collaborators";
     }
 
