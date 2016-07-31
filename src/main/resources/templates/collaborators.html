@@ -28,9 +28,6 @@
                                 <span class="dropdown-arrow"></span>
                                 <select>
                                     <option th:each="rle : ${roles}" value="#" selected="selected" th:text="${rle.name}">Designer</option>
-                                <!--    <option value="#">Developer</option>
-                                    <option value="#">QA</option>
-                                    <option value="#">DevOps</option>-->
                                 </select>
                             </div>
                         </li>
@@ -41,7 +38,7 @@
                         <select th:field="*{role.id}">
                             <option th:each="rle : ${roles}" th:value="${rle.id}" th:text="${rle.name}"></option>
                         </select>
-                        <button type="submit">Add</button>
+                        <button type="submit" class="button" style="width: 57px;">Add</button>
                         <!--<a class="button" href="#">Add</a>-->
                     </div>
                 </form>

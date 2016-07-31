@@ -88,6 +88,15 @@ public class ProjectController {
         return "project_detail";
     }
 
+    @RequestMapping("/project/{id}/edit")
+    public String editProjectForm(@PathVariable Integer id, Model model) {
+        Project project = projectService.findById(id);
+        List<Role> roles = roleService.findAll();
+        model.addAttribute("project", project);
+        model.addAttribute("roles", roles);
+        return "edit_project";
+    }
+
     @RequestMapping("/project/{id}/collaborators")
     public String projectCollaborators(@PathVariable Integer id, Model model) {
         Project project = projectService.findById(id);
