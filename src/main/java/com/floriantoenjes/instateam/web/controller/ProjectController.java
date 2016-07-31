@@ -116,6 +116,10 @@ public class ProjectController {
         project.setCollaborators(new ArrayList<>());
         params.forEach( (key, value) -> {
             int collaboratorId = Integer.parseInt(value);
+            if (collaboratorId == 0) {
+                System.out.println("Unassigned the role");
+                return;
+            }
             Collaborator collaborator = collaboratorService.findById(collaboratorId);
             List<Collaborator> collaborators = project.getCollaborators();
 
