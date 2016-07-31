@@ -97,6 +97,15 @@ public class ProjectController {
         return "edit_project";
     }
 
+    @RequestMapping(value = "/project/{id}/edit", method = RequestMethod.POST)
+    public String editProject(@PathVariable Integer id, @RequestParam("project_roles") String roles, Project project, Model model) {
+        List<Role> rolesNeeded = parseRoles(roles);
+        project.setRolesNeeded(rolesNeeded);
+
+        projectService.save(project);
+        return String.format("redirect:/project/%s", id);
+    }
+
     @RequestMapping("/project/{id}/collaborators")
     public String projectCollaborators(@PathVariable Integer id, Model model) {
         Project project = projectService.findById(id);

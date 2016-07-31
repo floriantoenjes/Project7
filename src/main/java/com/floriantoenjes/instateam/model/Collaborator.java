@@ -1,5 +1,7 @@
 package com.floriantoenjes.instateam.model;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,6 +11,7 @@ public class Collaborator {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Length(min = 3, max = 30)
     private String name;
 
     @ManyToOne
