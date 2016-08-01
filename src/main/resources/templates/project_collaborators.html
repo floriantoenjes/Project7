@@ -2,15 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
     <head th:replace="layout :: head('Project Collaborators')"></head>
     <body>
-        <header>
-            <div class="container">
-                <div class="site-header">
-                    <a class="logo" href="index.html">InstaTeam</a>
-                    <a class="new-project button icon-left" href="#"><i class="material-icons">add</i> New Project</a>
-                </div>
-            </div>
-        </header>
-        <nav>
+    <header th:replace="layout :: header"></header>
+    <nav th:replace="layout :: navbar"></nav>
             <ul>
                 <li class="selected"><a th:href="@{/index.html}">Projects</a></li>
                 <li><a th:href="@{/collaborators.html}">Collaborators</a></li>

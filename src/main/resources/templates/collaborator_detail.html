@@ -5,21 +5,8 @@
 <div th:if="${flash != null}">
     <p th:text="${flash.message}"></p>
 </div>
-<header>
-    <div class="container">
-        <div class="site-header">
-            <a class="logo" th:href="@{/index.html}">InstaTeam</a>
-            <a class="new-project button icon-left" th:href="@{/add}"><i class="material-icons">add</i> New Project</a>
-        </div>
-    </div>
-</header>
-<nav>
-    <ul>
-        <li><a th:href="@{/index.html}">Projects</a></li>
-        <li class="selected"><a th:href="@{/collaborators.html}">Collaborators</a></li>
-        <li><a th:href="@{/roles.html}">Roles</a></li>
-    </ul>
-</nav>
+<header th:replace="layout :: header"></header>
+<nav th:replace="layout :: navbar"></nav>
 <section>
     <div class="container wrapper">
         <form th:object="${collaborator}" th:action="@{/collaborators}" method="post">
