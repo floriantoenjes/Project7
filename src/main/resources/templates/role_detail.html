@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="layout :: head('Roles')"></head>
+<body>
+<header>
+    <div class="container">
+        <div class="site-header">
+            <a class="logo" href="index.html">InstaTeam</a>
+            <a class="new-project button icon-left" href="/add"><i class="material-icons">add</i> New Project</a>
+        </div>
+    </div>
+</header>
+<nav>
+    <ul>
+        <li><a href="index.html">Projects</a></li>
+        <li><a href="collaborators.html">Collaborators</a></li>
+        <li class="selected"><a href="roles.html">Roles</a></li>
+    </ul>
+</nav>
+<section>
+    <div class="container wrapper">
+        <form th:object="${role}" th:action="@{/roles}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+            <h2>Edit Role</h2>
+            <div class="actions add-new-role">
+                <input type="text" th:field="*{name}" placeholder="New Role..."/>
+                <button type="submit">Update</button>
+                <!--<a class="button" href="#">Add</a>-->
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>

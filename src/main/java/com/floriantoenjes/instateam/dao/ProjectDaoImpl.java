@@ -15,6 +15,7 @@ public class ProjectDaoImpl implements ProjectDao {
     SessionFactory sessionFactory;
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Project> findAll() {
         Session session = sessionFactory.openSession();
         List<Project> projects = session.createCriteria(Project.class).list();

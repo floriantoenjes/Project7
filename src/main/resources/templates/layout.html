@@ -17,5 +17,23 @@
         <div th:classappend="${#strings.toLowerCase(flash.status)}" th:text="${flash.message}" class="flash"></div>
     </div>
 
+
+    <header th:fragment="header">
+        <div class="container">
+            <div class="site-header">
+                <a class="logo" th:href="@{/index.html}">InstaTeam</a>
+                <a class="new-project button icon-left" th:href="@{/add}"><i class="material-icons">add</i> New Project</a>
+            </div>
+        </div>
+    </header>
+
+    <nav th:fragment="navbar">
+        <ul>
+            <li class="selected"><a th:href="@{/index.html}">Projects</a></li>
+            <li><a th:href="@{/collaborators.html}">Collaborators</a></li>
+            <li><a th:href="@{/roles.html}">Roles</a></li>
+        </ul>
+    </nav>
+
 </body>
 </html>

@@ -14,6 +14,7 @@ public class CollaboratorDaoImpl implements CollaboratorDao {
     SessionFactory sessionFactory;
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Collaborator> findAll() {
         Session session = sessionFactory.openSession();
         List<Collaborator> collaborators = session.createCriteria(Collaborator.class).list();

@@ -23,7 +23,8 @@
                     <h2>Manage Roles</h2>
                     <div>
                         <ul class="checkbox-list">
-                            <li th:each="rle : ${roles}"><span th:text="${rle.name}" class="primary"></span></li>
+                            <!--<li th:each="rle : ${roles}"><span th:text="${rle.name}" class="primary"></span></li>-->
+                            <li th:each="rle : ${roles}"><a th:href="|@{/roles/}${rle.id}" th:text="${rle.name}" class="primary"></a></li>
                         </ul>
                     </div>
                     <div class="actions add-new-role">

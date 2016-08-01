@@ -14,6 +14,7 @@ public class RoleDaoImpl implements RoleDao {
     private SessionFactory sessionFactory;
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Role> findAll() {
         Session session = sessionFactory.openSession();
         List<Role> roles = session.createCriteria(Role.class).list();
@@ -33,7 +34,7 @@ public class RoleDaoImpl implements RoleDao {
     public void save(Role role) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.save(role);
+        session.saveOrUpdate(role);
         session.getTransaction().commit();
         session.close();
     }

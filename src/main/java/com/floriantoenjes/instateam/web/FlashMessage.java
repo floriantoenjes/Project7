@@ -25,8 +25,8 @@ public class FlashMessage {
         this.status = status;
     }
 
-    public static enum Status {
-        FAILED, SUCCESS;
+    public enum Status {
+        FAILED, SUCCESS
     }
 }
 
