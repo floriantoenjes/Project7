@@ -32,17 +32,11 @@ public class CollaboratorController {
         List<Collaborator> collaborators = collaboratorService.findAll();
         List<Role> roles = roleService.findAll();
 
-        Map<Collaborator, Role> roleCollaborators = new HashMap<>();
-        for (Collaborator collaborator : collaborators) {
-            Role role = collaborator.getRole();
-            if (role == null) {
-                role = new Role();
-                role.setName("Undefined");
-            }
-            roleCollaborators.put(collaborator, role);
-        }
+        Map<Collaborator, Role> roleCollaborators = getCollaboratorRoleMap(collaborators);
 
-        model.addAttribute("collaborator", new Collaborator());
+        if (!model.containsAttribute("collaborator")) {
+            model.addAttribute("collaborator", new Collaborator());
+        }
         model.addAttribute("roleCollaborators", roleCollaborators);
         model.addAttribute("roles", roles);
 
@@ -53,9 +47,11 @@ public class CollaboratorController {
     public String addCollaborator(@Valid Collaborator collaborator, BindingResult result,
                                   RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute("flash", new FlashMessage("Failed to add collaborator",
-                    FlashMessage.Status.SUCCESS));
+            redirectAttributes.addFlashAttribute("collaborator", collaborator);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.collaborator", result);
         } else {
+            redirectAttributes.addFlashAttribute("flash", new FlashMessage("Collaborator created",
+                    FlashMessage.Status.SUCCESS));
             collaboratorService.save(collaborator);
         }
 
@@ -69,5 +65,18 @@ public class CollaboratorController {
         model.addAttribute("collaborator", collaborator);
         model.addAttribute("roles", roles);
         return "collaborator_detail";
+    }
+
+    private Map<Collaborator, Role> getCollaboratorRoleMap(List<Collaborator> collaborators) {
+        Map<Collaborator, Role> roleCollaborators = new HashMap<>();
+        for (Collaborator collaborator : collaborators) {
+            Role role = collaborator.getRole();
+            if (role == null) {
+                role = new Role();
+                role.setName("Undefined");
+            }
+            roleCollaborators.put(collaborator, role);
+        }
+        return roleCollaborators;
     }
 }

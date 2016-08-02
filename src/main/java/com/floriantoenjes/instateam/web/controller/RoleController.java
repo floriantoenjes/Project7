@@ -34,10 +34,8 @@ public class RoleController {
     @RequestMapping(value = "/roles", method = RequestMethod.POST)
     public String addRole(@Valid Role role, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.role",result);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.role", result);
             redirectAttributes.addFlashAttribute("role", role);
-            /*redirectAttributes.addFlashAttribute("flash", new FlashMessage("Role could not be created",
-                    FlashMessage.Status.FAILED));*/
         } else {
             redirectAttributes.addFlashAttribute("flash", new FlashMessage("Role has been created",
                     FlashMessage.Status.SUCCESS));

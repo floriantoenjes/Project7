@@ -18,7 +18,7 @@
     </div>-->
 
     <div th:fragment="flash" th:if="${flash != null}" class="container">
-        <i class="right material-icons" data-close="">close</i>
+        <!--<i class="right material-icons" data-close="">close</i>-->
         <div th:classappend="${#strings.toLowerCase(flash.status)}" th:text="${flash.message}" class="flash"></div>
     </div>
 
