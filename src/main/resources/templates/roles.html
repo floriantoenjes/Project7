@@ -15,7 +15,8 @@
                         </ul>
                     </div>
                     <div class="actions add-new-role">
-                        <input type="text" th:field="*{name}" placeholder="New Role..."/>
+                        <input type="text" th:field="*{name}" th:classappend="${#fields.hasErrors('name')}? 'error' : ''" placeholder="New Role..."/>
+                        <div class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                         <button type="submit">Add</button>
                         <!--<a class="button" href="#">Add</a>-->
                     </div>

@@ -413,3 +413,13 @@ form .add-new-collaborator .button {
    .flash.success {
         background-color: #15eb2e;
    }
+
+   .error {
+        background-color: #ac4343;
+        color: white;
+   }
+
+   .error .error-message {
+        background-color: #ac4343;
+        color: white;
+   }
