@@ -32,31 +32,29 @@ public class CollaboratorController {
         List<Collaborator> collaborators = collaboratorService.findAll();
         List<Role> roles = roleService.findAll();
 
-        // Todo: Add map for collaborator to role
         Map<Collaborator, Role> roleCollaborators = new HashMap<>();
-        for (Collaborator collab : collaborators) {
-            Role role = collab.getRole();
+        for (Collaborator collaborator : collaborators) {
+            Role role = collaborator.getRole();
             if (role == null) {
                 role = new Role();
                 role.setName("Undefined");
             }
-            roleCollaborators.put(collab, role);
+            roleCollaborators.put(collaborator, role);
         }
 
         model.addAttribute("collaborator", new Collaborator());
         model.addAttribute("roleCollaborators", roleCollaborators);
-//        model.addAttribute("collaborators", collaborators);
         model.addAttribute("roles", roles);
-
 
         return "collaborators";
     }
 
     @RequestMapping(value = "/collaborators", method = RequestMethod.POST)
-    public String addCollaborator(@Valid Collaborator collaborator, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String addCollaborator(@Valid Collaborator collaborator, BindingResult result,
+                                  RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            result.getAllErrors().forEach(System.out::println);
-            redirectAttributes.addFlashAttribute("flash", new FlashMessage("Failed to add collaborator", FlashMessage.Status.SUCCESS));
+            redirectAttributes.addFlashAttribute("flash", new FlashMessage("Failed to add collaborator",
+                    FlashMessage.Status.SUCCESS));
         } else {
             collaboratorService.save(collaborator);
         }

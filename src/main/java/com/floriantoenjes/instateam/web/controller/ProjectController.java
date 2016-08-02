@@ -54,13 +54,11 @@ public class ProjectController {
     public String addProject(@RequestParam("project_roles") String roles, @Valid Project project, BindingResult result,
                              RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            System.out.println("Errors:");
-            result.getAllErrors().forEach(System.out::println);
-            System.out.println();
             redirectAttributes.addFlashAttribute("flash", new FlashMessage("Could not create project",
                     FlashMessage.Status.FAILED));
             return "redirect:/add";
         }
+
         List<Role> rolesNeeded = parseRoles(roles);
         project.setRolesNeeded(rolesNeeded);
 
@@ -72,21 +70,21 @@ public class ProjectController {
     public String projectDetail(@PathVariable Integer id, Model model) {
         Project project = projectService.findById(id);
 
-        List<Role> roles = project.getRolesNeeded();
+        List<Role> rolesNeeded = project.getRolesNeeded();
         List<Collaborator> collaborators = project.getCollaborators();
         Map<Role, Collaborator> roleColab = new HashMap<>();
 
         roleLoop:
-        for (Role role : roles) {
+        for (Role roleNeeded : rolesNeeded) {
             for (Collaborator collaborator : collaborators) {
-                if (role.getId() == collaborator.getRole().getId()) {
-                    roleColab.put(role, collaborator);
+                if (roleNeeded.getId() == collaborator.getRole().getId()) {
+                    roleColab.put(roleNeeded, collaborator);
                     continue roleLoop;
                 }
             }
             Collaborator unassigned = new Collaborator();
             unassigned.setName("Unassigned");
-            roleColab.put(role, unassigned);
+            roleColab.put(roleNeeded, unassigned);
         }
 
         model.addAttribute("project", project);
@@ -98,8 +96,10 @@ public class ProjectController {
     public String editProjectForm(@PathVariable Integer id, Model model) {
         Project project = projectService.findById(id);
         List<Role> roles = roleService.findAll();
+
         model.addAttribute("project", project);
         model.addAttribute("roles", roles);
+
         return "edit_project";
     }
 
@@ -113,7 +113,7 @@ public class ProjectController {
     }
 
     @RequestMapping("/project/{id}/collaborators")
-    public String projectCollaborators(@PathVariable Integer id, Model model) {
+    public String assignProjectCollaboratorsForm(@PathVariable Integer id, Model model) {
         Project project = projectService.findById(id);
         List<Collaborator> collaborators = collaboratorService.findAll();
 
