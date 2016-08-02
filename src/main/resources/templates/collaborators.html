@@ -22,7 +22,8 @@
                         </li>
                     </ul>
                     <div class="actions add-new-collaborator">
-                        <input type="text" th:field="*{name}" placeholder="Name..."/>
+                        <input type="text" th:field="*{name}"  th:classappend="${#fields.hasErrors('name')}? 'error' : ''" placeholder="Name..."/>
+                        <div class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                         <!--<input type="text" th:field="*{role.id}" placeholder="Role..."/>-->
                         <select th:field="*{role.id}">
                             <option th:each="rle : ${roles}" th:value="${rle.id}" th:text="${rle.name}"></option>

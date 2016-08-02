@@ -419,7 +419,6 @@ form .add-new-collaborator .button {
         color: white;
    }
 
-   .error .error-message {
-        background-color: #ac4343;
-        color: white;
+   .error-message {
+        clear: both;
    }
