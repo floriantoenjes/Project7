@@ -44,7 +44,9 @@ public class ProjectController {
     public String newProjectForm(Model model) {
         List<Role> roles =  roleService.findAll();
 
-        model.addAttribute("project", new Project());
+        if (!model.containsAttribute("project")) {
+            model.addAttribute("project", new Project());
+        }
         model.addAttribute("roles", roles);
 
         return "edit_project";
@@ -54,15 +56,18 @@ public class ProjectController {
     public String addProject(@RequestParam("project_roles") String roles, @Valid Project project, BindingResult result,
                              RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute("flash", new FlashMessage("Could not create project",
-                    FlashMessage.Status.FAILED));
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.project", result);
+            redirectAttributes.addFlashAttribute("project", project);
             return "redirect:/add";
         }
 
         List<Role> rolesNeeded = parseRoles(roles);
         project.setRolesNeeded(rolesNeeded);
 
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage("Project created",
+                FlashMessage.Status.SUCCESS));
         projectService.save(project);
+
         return "redirect:/index";
     }
 
@@ -70,22 +75,7 @@ public class ProjectController {
     public String projectDetail(@PathVariable Integer id, Model model) {
         Project project = projectService.findById(id);
 
-        List<Role> rolesNeeded = project.getRolesNeeded();
-        List<Collaborator> collaborators = project.getCollaborators();
-        Map<Role, Collaborator> roleColab = new HashMap<>();
-
-        roleLoop:
-        for (Role roleNeeded : rolesNeeded) {
-            for (Collaborator collaborator : collaborators) {
-                if (roleNeeded.getId() == collaborator.getRole().getId()) {
-                    roleColab.put(roleNeeded, collaborator);
-                    continue roleLoop;
-                }
-            }
-            Collaborator unassigned = new Collaborator();
-            unassigned.setName("Unassigned");
-            roleColab.put(roleNeeded, unassigned);
-        }
+        Map<Role, Collaborator> roleColab = getRoleCollaboratorMap(project);
 
         model.addAttribute("project", project);
         model.addAttribute("rolecolab", roleColab);
@@ -104,7 +94,8 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/project/{id}/edit", method = RequestMethod.POST)
-    public String editProject(@PathVariable Integer id, @RequestParam("project_roles") String roles, Project project, Model model) {
+    public String editProject(@PathVariable Integer id, @RequestParam("project_roles") String roles,
+                              @Valid Project project, Model model) {
         List<Role> rolesNeeded = parseRoles(roles);
         project.setRolesNeeded(rolesNeeded);
 
@@ -117,18 +108,7 @@ public class ProjectController {
         Project project = projectService.findById(id);
         List<Collaborator> collaborators = collaboratorService.findAll();
 
-        Map<Role, List<Collaborator>> roleCollaborators = new HashMap<>();
-        for (Role role : project.getRolesNeeded()) {
-            List<Collaborator> coList = new ArrayList<>();
-            for (Collaborator collaborator : collaborators) {
-                if(collaborator.getRole() == null) {
-                    continue;
-                } else if (collaborator.getRole().getId() == role.getId()) {
-                    coList.add(collaborator);
-                }
-            }
-            roleCollaborators.put(role, coList);
-        }
+        Map<Role, List<Collaborator>> roleCollaborators = getRoleListMap(project, collaborators);
 
         model.addAttribute("project", project);
         model.addAttribute("roleCollaborators", roleCollaborators);
@@ -172,6 +152,42 @@ public class ProjectController {
             rolesNeeded.add(role);
         });
         return rolesNeeded;
+    }
+
+    private Map<Role, Collaborator> getRoleCollaboratorMap(Project project) {
+        List<Role> rolesNeeded = project.getRolesNeeded();
+        List<Collaborator> collaborators = project.getCollaborators();
+        Map<Role, Collaborator> roleColab = new HashMap<>();
+
+        roleLoop:
+        for (Role roleNeeded : rolesNeeded) {
+            for (Collaborator collaborator : collaborators) {
+                if (roleNeeded.getId() == collaborator.getRole().getId()) {
+                    roleColab.put(roleNeeded, collaborator);
+                    continue roleLoop;
+                }
+            }
+            Collaborator unassigned = new Collaborator();
+            unassigned.setName("Unassigned");
+            roleColab.put(roleNeeded, unassigned);
+        }
+        return roleColab;
+    }
+
+    private Map<Role, List<Collaborator>> getRoleListMap(Project project, List<Collaborator> collaborators) {
+        Map<Role, List<Collaborator>> roleCollaborators = new HashMap<>();
+        for (Role role : project.getRolesNeeded()) {
+            List<Collaborator> coList = new ArrayList<>();
+            for (Collaborator collaborator : collaborators) {
+                if(collaborator.getRole() == null) {
+                    continue;
+                } else if (collaborator.getRole().getId() == role.getId()) {
+                    coList.add(collaborator);
+                }
+            }
+            roleCollaborators.put(role, coList);
+        }
+        return roleCollaborators;
     }
 
 }
