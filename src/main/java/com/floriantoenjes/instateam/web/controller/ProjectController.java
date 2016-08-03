@@ -53,11 +53,13 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addProject(@RequestParam("project_roles") String roles, @Valid Project project, BindingResult result,
+    public String addProject(@RequestParam(value = "project_roles", required = false) String roles, @Valid Project project, BindingResult result,
                              RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
+        if (result.hasErrors() || roles == null) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.project", result);
             redirectAttributes.addFlashAttribute("project", project);
+            redirectAttributes.addFlashAttribute("flash", new FlashMessage("The project needs a role!",
+                    FlashMessage.Status.FAILED));
             return "redirect:/add";
         }
 
@@ -94,7 +96,7 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/project/{id}/edit", method = RequestMethod.POST)
-    public String editProject(@PathVariable Integer id, @RequestParam("project_roles") String roles,
+    public String editProject(@PathVariable Integer id, @RequestParam(value = "project_roles", required = false) String roles,
                               @Valid Project project, Model model) {
         List<Role> rolesNeeded = parseRoles(roles);
         project.setRolesNeeded(rolesNeeded);
