@@ -414,6 +414,10 @@ form .add-new-collaborator .button {
         background-color: #15eb2e;
    }
 
+   .flash.failed {
+        background-color: #ac4343;
+   }
+
    .error {
         background-color: #ac4343;
         color: white;

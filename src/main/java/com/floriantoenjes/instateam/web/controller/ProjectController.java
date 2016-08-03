@@ -53,13 +53,15 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addProject(@RequestParam(value = "project_roles", required = false) String roles, @Valid Project project, BindingResult result,
-                             RedirectAttributes redirectAttributes) {
+    public String addProject(@RequestParam(value = "project_roles", required = false) String roles, @Valid Project project,
+                             BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors() || roles == null) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.project", result);
             redirectAttributes.addFlashAttribute("project", project);
-            redirectAttributes.addFlashAttribute("flash", new FlashMessage("The project needs a role!",
-                    FlashMessage.Status.FAILED));
+            if (roles == null) {
+                redirectAttributes.addFlashAttribute("flash", new FlashMessage("The project needs a role!",
+                        FlashMessage.Status.FAILED));
+            }
             return "redirect:/add";
         }
 
@@ -86,10 +88,12 @@ public class ProjectController {
 
     @RequestMapping("/project/{id}/edit")
     public String editProjectForm(@PathVariable Integer id, Model model) {
-        Project project = projectService.findById(id);
-        List<Role> roles = roleService.findAll();
+        if (!model.containsAttribute("project")) {
+            Project project = projectService.findById(id);
+            model.addAttribute("project", project);
+        }
 
-        model.addAttribute("project", project);
+        List<Role> roles = roleService.findAll();
         model.addAttribute("roles", roles);
 
         return "edit_project";
@@ -97,7 +101,18 @@ public class ProjectController {
 
     @RequestMapping(value = "/project/{id}/edit", method = RequestMethod.POST)
     public String editProject(@PathVariable Integer id, @RequestParam(value = "project_roles", required = false) String roles,
-                              @Valid Project project, Model model) {
+                              @Valid Project project, BindingResult result, RedirectAttributes redirectAttributes) {
+
+        if (result.hasErrors() || roles == null) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.project", result);
+            redirectAttributes.addFlashAttribute("project", project);
+            if (roles == null) {
+                redirectAttributes.addFlashAttribute("flash", new FlashMessage("The project needs a role!",
+                        FlashMessage.Status.FAILED));
+            }
+            return String.format("redirect:/project/%s/edit", id);
+        }
+
         List<Role> rolesNeeded = parseRoles(roles);
         project.setRolesNeeded(rolesNeeded);
 
