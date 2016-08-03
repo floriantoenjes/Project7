@@ -11,7 +11,7 @@ public class Collaborator {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Length(min = 3, max = 30)
+    @Length(min = 5, max = 30)
     private String name;
 
     @ManyToOne

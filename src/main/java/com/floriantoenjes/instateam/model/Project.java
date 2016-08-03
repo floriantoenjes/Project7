@@ -3,6 +3,7 @@ package com.floriantoenjes.instateam.model;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,14 +14,14 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Length(min = 3, max = 30)
+    @Length(min = 5, max = 25)
     private String name;
-    @Length(min = 3, max = 255)
+    @Length(min = 5, max = 255)
     private String description;
     private String status;
 
 
-    // Todo: Not null?
+    // @NotNull not needed, checked on controller
     @ManyToMany
     private List<Role> rolesNeeded;
 
