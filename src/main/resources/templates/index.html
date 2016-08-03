@@ -10,7 +10,7 @@
                     <div th:each="project : ${projects}" class="project">
                         <h2><a th:href="|project/${project.id}|" th:text="${project.name}"></a></h2>
                         <p th:text="${project.description}"></p>
-                        <span th:class="'tag' + ${project.status}" th:text="${project.status}"></span>
+                        <span th:class="'tag ' + ${project.status}" th:text="${project.status}"></span>
                     </div>
                 </div>
             </div>
