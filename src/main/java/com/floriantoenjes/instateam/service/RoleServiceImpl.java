@@ -5,6 +5,7 @@ import com.floriantoenjes.instateam.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -14,7 +15,11 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<Role> findAll() {
-        return roleDao.findAll();
+        List<Role> roles = roleDao.findAll();
+        Collections.sort(roles, (role1, role2) -> {
+            return role1.getName().compareTo(role2.getName());
+        });
+        return roles;
     }
 
     @Override

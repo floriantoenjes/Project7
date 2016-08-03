@@ -5,6 +5,7 @@ import com.floriantoenjes.instateam.model.Collaborator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -14,7 +15,11 @@ public class CollaboratorServiceImpl implements CollaboratorService {
 
     @Override
     public List<Collaborator> findAll() {
-        return collaboratorDao.findAll();
+        List<Collaborator> collaborators = collaboratorDao.findAll();
+        Collections.sort(collaborators, (col1, col2) -> {
+            return col1.getName().compareTo(col2.getName());
+        });
+        return collaborators;
     }
 
     @Override
