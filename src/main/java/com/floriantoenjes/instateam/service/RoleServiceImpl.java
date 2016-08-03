@@ -16,9 +16,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<Role> findAll() {
         List<Role> roles = roleDao.findAll();
-        Collections.sort(roles, (role1, role2) -> {
-            return role1.getName().compareTo(role2.getName());
-        });
+        Collections.sort(roles, (role1, role2) -> role1.getName().compareTo(role2.getName()));
         return roles;
     }
 

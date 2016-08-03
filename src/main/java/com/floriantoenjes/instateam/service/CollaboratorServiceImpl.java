@@ -16,9 +16,7 @@ public class CollaboratorServiceImpl implements CollaboratorService {
     @Override
     public List<Collaborator> findAll() {
         List<Collaborator> collaborators = collaboratorDao.findAll();
-        Collections.sort(collaborators, (col1, col2) -> {
-            return col1.getName().compareTo(col2.getName());
-        });
+        Collections.sort(collaborators, (col1, col2) -> col1.getName().compareTo(col2.getName()));
         return collaborators;
     }
 
