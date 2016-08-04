@@ -408,10 +408,11 @@ form .add-new-collaborator .button {
 
    .flash {
         color: white;
+        padding: 0.5em;
    }
 
    .flash.success {
-        background-color: #15eb2e;
+        background-color: #87bc2d;
    }
 
    .flash.failed {

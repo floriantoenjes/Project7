@@ -6,11 +6,12 @@
 <nav th:replace="layout :: navbar"></nav>
 <section>
     <div class="container wrapper">
-        <form th:object="${role}" th:action="@{/roles}" method="post">
+        <form th:object="${role}" th:action="|@{/roles/}${role.id}|" method="post">
             <input type="hidden" th:field="*{id}"/>
             <h2>Edit Role</h2>
             <div class="actions add-new-role">
-                <input type="text" th:field="*{name}" placeholder="New Role..."/>
+                <input type="text" th:field="*{name}" th:classappend="${#fields.hasErrors('name')}? 'error' : ''" placeholder="New Role..."/>
+                <div class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                 <button type="submit" class="button" style="width: 84px;">Update</button>
                 <!--<a class="button" href="#">Add</a>-->
             </div>

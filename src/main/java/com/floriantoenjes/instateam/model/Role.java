@@ -15,7 +15,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Length(min = 4, max = 25)
+    @Length(min = 3, max = 25)
     private String name;
 
     public Role() {

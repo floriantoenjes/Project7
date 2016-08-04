@@ -46,10 +46,26 @@ public class RoleController {
 
     @RequestMapping("/roles/{id}")
     public String editRoleForm(@PathVariable Integer id, Model model) {
-        Role role = roleService.findById(id);
-
-        model.addAttribute("role", role);
-
+        if (!model.containsAttribute("role")) {
+            Role role = roleService.findById(id);
+            model.addAttribute("role", role);
+        }
         return "role_detail";
+    }
+
+    @RequestMapping(value = "/roles/{id}", method = RequestMethod.POST)
+    public String editRole(@PathVariable Integer id, @Valid Role role, BindingResult result,
+                           RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.role", result);
+            redirectAttributes.addFlashAttribute("role", role);
+            return String.format("redirect:/roles/%s", id);
+        }
+
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage("Role has been updated",
+                FlashMessage.Status.SUCCESS));
+        roleService.save(role);
+
+        return "redirect:/roles";
     }
 }
