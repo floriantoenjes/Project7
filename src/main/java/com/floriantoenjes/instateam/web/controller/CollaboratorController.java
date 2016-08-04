@@ -60,11 +60,30 @@ public class CollaboratorController {
 
     @RequestMapping("/collaborators/{id}")
     public String editCollaboratorForm(@PathVariable Integer id, Model model) {
-        Collaborator collaborator = collaboratorService.findById(id);
+        if (!model.containsAttribute("collaborator")) {
+            Collaborator collaborator = collaboratorService.findById(id);
+            model.addAttribute("collaborator", collaborator);
+        }
         List<Role> roles = roleService.findAll();
-        model.addAttribute("collaborator", collaborator);
         model.addAttribute("roles", roles);
         return "collaborator_detail";
+    }
+
+    @RequestMapping(value = "/collaborators/{id}", method = RequestMethod.POST)
+    public String editCollaborator(@PathVariable Integer id, @Valid Collaborator collaborator, BindingResult result,
+                                   RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute("collaborator", collaborator);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.collaborator", result);
+
+            return String.format("redirect:/collaborators/%s", id);
+        }
+
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage("Collaborator has been updated",
+                FlashMessage.Status.SUCCESS));
+        collaboratorService.save(collaborator);
+
+        return "redirect:/collaborators";
     }
 
     private Map<Collaborator, Role> getCollaboratorRoleMap(List<Collaborator> collaborators) {

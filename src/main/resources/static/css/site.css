@@ -407,6 +407,7 @@ form .add-new-collaborator .button {
    ========================================================================== */
 
    .flash {
+        border-radius: 6px;
         color: white;
         padding: 0.5em;
    }

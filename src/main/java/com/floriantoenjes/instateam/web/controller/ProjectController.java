@@ -115,7 +115,8 @@ public class ProjectController {
 
         List<Role> rolesNeeded = parseRoles(roles);
         project.setRolesNeeded(rolesNeeded);
-
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage("Project updated",
+                FlashMessage.Status.SUCCESS));
         projectService.save(project);
         return String.format("redirect:/project/%s", id);
     }
@@ -133,7 +134,8 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/project/{id}/collaborators", method = RequestMethod.POST)
-    public String assignCollaborators(@RequestParam Map<String, String> params, @PathVariable Integer id) {
+    public String assignCollaborators(@RequestParam Map<String, String> params, @PathVariable Integer id,
+                                      RedirectAttributes redirectAttributes) {
         Project project = projectService.findById(id);
         project.setCollaborators(new ArrayList<>());
         params.forEach( (key, value) -> {
