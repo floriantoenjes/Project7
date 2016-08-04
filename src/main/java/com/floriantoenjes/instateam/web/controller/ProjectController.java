@@ -198,9 +198,7 @@ public class ProjectController {
         for (Role role : project.getRolesNeeded()) {
             List<Collaborator> coList = new ArrayList<>();
             for (Collaborator collaborator : collaborators) {
-                if(collaborator.getRole() == null) {
-                    continue;
-                } else if (collaborator.getRole().getId() == role.getId()) {
+                 if (collaborator.getRole() != null && collaborator.getRole().getId() == role.getId()) {
                     coList.add(collaborator);
                 }
             }
