@@ -140,22 +140,24 @@ public class ProjectController {
         project.setCollaborators(new ArrayList<>());
         params.forEach( (key, value) -> {
             int collaboratorId = Integer.parseInt(value);
+
+            // Unassign the collaborator
             if (collaboratorId == 0) {
-                System.out.println("Unassigned the role");
                 return;
             }
+
+            // Check if collaborator is already assigned
             Collaborator collaborator = collaboratorService.findById(collaboratorId);
             List<Collaborator> collaborators = project.getCollaborators();
-
             for (Collaborator colabProject : collaborators) {
                 if (colabProject.getId() == collaborator.getId()) {
-                    System.out.println("Did not add " + collaborator.getName());
                     return;
                 }
             }
 
+            // Assign collaborator
             project.getCollaborators().add(collaborator);
-            System.out.println("Added " + collaborator.getName() + " to project " + project.getName());
+
         });
         projectService.save(project);
 
