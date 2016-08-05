@@ -4,7 +4,13 @@
     <body>
     <div th:replace="layout :: flash"></div>
     <header th:replace="layout :: header"></header>
-    <nav th:replace="layout :: navbar"></nav>
+    <nav>
+        <ul>
+            <li><a th:href="@{/index.html}">Projects</a></li>
+            <li><a th:href="@{/collaborators.html}">Collaborators</a></li>
+            <li class="selected"><a th:href="@{/roles.html}">Roles</a></li>
+        </ul>
+    </nav>
         <section>
             <div class="container wrapper">
                 <form th:object="${role}" action="" method="post">
