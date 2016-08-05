@@ -176,7 +176,7 @@ public class ProjectController {
         params.forEach( (key, value) -> {
             int collaboratorId = Integer.parseInt(value);
 
-            // Unassign the collaborator
+            // Unassign collaborator
             if (collaboratorId == 0) {
                 return;
             }
