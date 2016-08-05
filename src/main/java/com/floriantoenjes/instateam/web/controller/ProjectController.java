@@ -142,17 +142,27 @@ public class ProjectController {
         List<Collaborator> collaborators = project.getCollaborators();
         Map<Role, Collaborator> roleColab = new HashMap<>();
 
-        roleLoop:
+//        roleLoop:
         for (Role roleNeeded : rolesNeeded) {
-            for (Collaborator collaborator : collaborators) {
+            roleColab.put(roleNeeded,
+                    collaborators.stream().filter( (col)-> {
+                        return col.getRole().getId() == roleNeeded.getId();
+                    }).findFirst().orElseGet( () -> {
+                        Collaborator unassigned = new Collaborator();
+                        unassigned.setName("Unassigned");
+                        return unassigned;
+                    }));
+
+
+            /*for (Collaborator collaborator : collaborators) {
                 if (roleNeeded.getId() == collaborator.getRole().getId()) {
                     roleColab.put(roleNeeded, collaborator);
                     continue roleLoop;
                 }
-            }
-            Collaborator unassigned = new Collaborator();
+            }*/
+            /*Collaborator unassigned = new Collaborator();
             unassigned.setName("Unassigned");
-            roleColab.put(roleNeeded, unassigned);
+            roleColab.put(roleNeeded, unassigned);*/
         }
         return roleColab;
     }
