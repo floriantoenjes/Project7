@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
-public class StringToRoleList implements Converter<String, Role> {
+public class StringRoleConverter implements Converter<String, Role> {
 
     @Override
     public Role convert(String source) {
@@ -25,7 +25,7 @@ public class StringToRoleList implements Converter<String, Role> {
     public ConversionService getConversionService() {
         ConversionServiceFactoryBean bean = new ConversionServiceFactoryBean();
         Set<Converter> converters = new HashSet<>();
-        converters.add(new StringToRoleList());
+        converters.add(new StringRoleConverter());
         bean.setConverters(converters);
         return bean.getObject();
     }
