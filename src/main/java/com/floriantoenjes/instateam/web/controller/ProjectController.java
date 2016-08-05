@@ -55,18 +55,12 @@ public class ProjectController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addProject(@RequestParam(value = "project_roles", required = false) String roles, @Valid Project project,
                              BindingResult result, RedirectAttributes redirectAttributes) {
-        if (result.hasErrors() || roles == null) {
+        if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.project", result);
             redirectAttributes.addFlashAttribute("project", project);
-            if (roles == null) {
-                redirectAttributes.addFlashAttribute("flash", new FlashMessage("The project needs a role!",
-                        FlashMessage.Status.FAILED));
-            }
+
             return "redirect:/add";
         }
-
-        List<Role> rolesNeeded = parseRoles(roles);
-        project.setRolesNeeded(rolesNeeded);
 
         redirectAttributes.addFlashAttribute("flash", new FlashMessage("Project created",
                 FlashMessage.Status.SUCCESS));
