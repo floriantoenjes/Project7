@@ -31,7 +31,8 @@
                         </div>
                     </div>
                     <div>
-                        <label for="project_roles">Project Roles:</label>
+                        <label for="project_roles" th:classappend="${#fields.hasErrors('rolesNeeded')}? 'error' : ''">Project Roles:</label>
+                        <div class="error-message" th:if="${#fields.hasErrors('rolesNeeded')}" th:errors="*{rolesNeeded}"></div>
                         <ul class="checkbox-list">
                             <li th:each="role : ${roles}" >
                                 <input type="checkbox" th:field="*{rolesNeeded}" th:value="${role.id}"/>
