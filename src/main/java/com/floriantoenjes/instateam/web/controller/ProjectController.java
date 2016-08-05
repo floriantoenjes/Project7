@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ProjectController {
@@ -142,28 +145,18 @@ public class ProjectController {
         List<Collaborator> collaborators = project.getCollaborators();
         Map<Role, Collaborator> roleColab = new HashMap<>();
 
-//        roleLoop:
         for (Role roleNeeded : rolesNeeded) {
             roleColab.put(roleNeeded,
-                    collaborators.stream().filter( (col)-> {
-                        return col.getRole().getId() == roleNeeded.getId();
-                    }).findFirst().orElseGet( () -> {
+                    collaborators.stream()
+                            .filter( (col)-> col.getRole().getId() == roleNeeded.getId())
+                            .findFirst()
+                            .orElseGet( () -> {
                         Collaborator unassigned = new Collaborator();
                         unassigned.setName("Unassigned");
                         return unassigned;
                     }));
-
-
-            /*for (Collaborator collaborator : collaborators) {
-                if (roleNeeded.getId() == collaborator.getRole().getId()) {
-                    roleColab.put(roleNeeded, collaborator);
-                    continue roleLoop;
-                }
-            }*/
-            /*Collaborator unassigned = new Collaborator();
-            unassigned.setName("Unassigned");
-            roleColab.put(roleNeeded, unassigned);*/
         }
+
         return roleColab;
     }
 
