@@ -137,28 +137,7 @@ public class ProjectController {
     public String assignCollaborators(@RequestParam Map<String, String> params, @PathVariable Integer id,
                                       RedirectAttributes redirectAttributes) {
         Project project = projectService.findById(id);
-        project.setCollaborators(new ArrayList<>());
-        params.forEach( (key, value) -> {
-            int collaboratorId = Integer.parseInt(value);
-
-            // Unassign the collaborator
-            if (collaboratorId == 0) {
-                return;
-            }
-
-            // Check if collaborator is already assigned
-            Collaborator collaborator = collaboratorService.findById(collaboratorId);
-            List<Collaborator> collaborators = project.getCollaborators();
-            for (Collaborator colabProject : collaborators) {
-                if (colabProject.getId() == collaborator.getId()) {
-                    return;
-                }
-            }
-
-            // Assign collaborator
-            project.getCollaborators().add(collaborator);
-
-        });
+        assignCollaborators(params, project);
         projectService.save(project);
 
         return String.format("redirect:/project/%s", id);
@@ -207,6 +186,31 @@ public class ProjectController {
             roleCollaborators.put(role, coList);
         }
         return roleCollaborators;
+    }
+
+    private void assignCollaborators(@RequestParam Map<String, String> params, Project project) {
+        project.setCollaborators(new ArrayList<>());
+        params.forEach( (key, value) -> {
+            int collaboratorId = Integer.parseInt(value);
+
+            // Unassign the collaborator
+            if (collaboratorId == 0) {
+                return;
+            }
+
+            // Check if collaborator is already assigned
+            Collaborator collaborator = collaboratorService.findById(collaboratorId);
+            List<Collaborator> collaborators = project.getCollaborators();
+            for (Collaborator colabProject : collaborators) {
+                if (colabProject.getId() == collaborator.getId()) {
+                    return;
+                }
+            }
+
+            // Assign collaborator
+            project.getCollaborators().add(collaborator);
+
+        });
     }
 
 }
