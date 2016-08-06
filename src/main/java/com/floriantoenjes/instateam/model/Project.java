@@ -20,7 +20,7 @@ public class Project {
     private String status;
 
 
-    @NotNull(message = "The project needs roles!")
+    @NotNull(message = "The project needs at least 1 role!")
     @ManyToMany
     private List<Role> rolesNeeded;
 
