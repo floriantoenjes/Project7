@@ -60,14 +60,14 @@ public class ProjectController {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.project", result);
             redirectAttributes.addFlashAttribute("project", project);
-            if (project.getRolesNeeded() == null) {
+            /*if (project.getRolesNeeded() == null) {
                 redirectAttributes.addFlashAttribute("flash", new FlashMessage("The project needs a role!",
                         FlashMessage.Status.FAILED));
-            }
+            }*/
             return "redirect:/add";
         }
 
-        redirectAttributes.addFlashAttribute("flash", new FlashMessage("Project created",
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage("Project has been created.",
                 FlashMessage.Status.SUCCESS));
         projectService.save(project);
 
@@ -105,14 +105,14 @@ public class ProjectController {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.project", result);
             redirectAttributes.addFlashAttribute("project", project);
-            if (project.getRolesNeeded() == null) {
+            /*if (project.getRolesNeeded() == null) {
                 redirectAttributes.addFlashAttribute("flash", new FlashMessage("The project needs a role!",
                         FlashMessage.Status.FAILED));
-            }
+            }*/
             return String.format("redirect:/project/%s/edit", id);
         }
 
-        redirectAttributes.addFlashAttribute("flash", new FlashMessage("Project updated",
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage("The project has been updated.",
                 FlashMessage.Status.SUCCESS));
         projectService.save(project);
         return String.format("redirect:/project/%s", id);
@@ -127,6 +127,7 @@ public class ProjectController {
 
         model.addAttribute("project", project);
         model.addAttribute("roleCollaborators", roleCollaborators);
+
         return "project_collaborators";
     }
 
@@ -135,6 +136,9 @@ public class ProjectController {
                                       RedirectAttributes redirectAttributes) {
         Project project = projectService.findById(id);
         assignCollaborators(params, project);
+
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage("Collaborators have been assigned.",
+                FlashMessage.Status.SUCCESS));
         projectService.save(project);
 
         return String.format("redirect:/project/%s", id);

@@ -50,7 +50,7 @@ public class CollaboratorController {
             redirectAttributes.addFlashAttribute("collaborator", collaborator);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.collaborator", result);
         } else {
-            redirectAttributes.addFlashAttribute("flash", new FlashMessage("Collaborator created",
+            redirectAttributes.addFlashAttribute("flash", new FlashMessage("The collaborator has been created.",
                     FlashMessage.Status.SUCCESS));
             collaboratorService.save(collaborator);
         }
@@ -79,7 +79,7 @@ public class CollaboratorController {
             return String.format("redirect:/collaborators/%s", id);
         }
 
-        redirectAttributes.addFlashAttribute("flash", new FlashMessage("Collaborator has been updated",
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage("The collaborator has been updated.",
                 FlashMessage.Status.SUCCESS));
         collaboratorService.save(collaborator);
 

@@ -428,3 +428,13 @@ form .add-new-collaborator .button {
    .error-message {
         clear: both;
    }
+
+   i {
+        float: right;
+        color: white;
+        margin: 5px;
+   }
+
+   i:hover {
+        cursor: pointer;
+   }

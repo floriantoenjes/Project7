@@ -15,7 +15,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Length(min = 3, max = 25)
+    @Length(min = 3, max = 25, message="Has to be between 3 and 25 characters!")
     private String name;
 
     public Role() {

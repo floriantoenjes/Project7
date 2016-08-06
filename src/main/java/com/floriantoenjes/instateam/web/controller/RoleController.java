@@ -37,7 +37,7 @@ public class RoleController {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.role", result);
             redirectAttributes.addFlashAttribute("role", role);
         } else {
-            redirectAttributes.addFlashAttribute("flash", new FlashMessage("Role has been created",
+            redirectAttributes.addFlashAttribute("flash", new FlashMessage("The role has been created.",
                     FlashMessage.Status.SUCCESS));
             roleService.save(role);
         }
@@ -62,7 +62,7 @@ public class RoleController {
             return String.format("redirect:/roles/%s", id);
         }
 
-        redirectAttributes.addFlashAttribute("flash", new FlashMessage("Role has been updated",
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage("The role has been updated.",
                 FlashMessage.Status.SUCCESS));
         roleService.save(role);
 

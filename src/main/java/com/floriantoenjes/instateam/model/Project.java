@@ -13,14 +13,14 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Length(min = 5, max = 25)
+    @Length(min = 5, max = 25, message = "Has to be between 5 and 25 characters!")
     private String name;
-    @Length(min = 5, max = 255)
+    @Length(min = 5, max = 255, message = "Has to be between 5 and 255 characters!")
     private String description;
     private String status;
 
 
-    @NotNull
+    @NotNull(message = "The project needs roles!")
     @ManyToMany
     private List<Role> rolesNeeded;
 

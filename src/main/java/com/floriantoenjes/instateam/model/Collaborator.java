@@ -11,7 +11,7 @@ public class Collaborator {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Length(min = 5, max = 30)
+    @Length(min = 5, max = 30, message = "Has to be between 5 and 30 characters!")
     private String name;
 
     @ManyToOne

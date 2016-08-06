@@ -9,6 +9,11 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
     <link rel="stylesheet" th:href="@{/css/normalize.css}"/>
     <link rel="stylesheet" th:href="@{/css/site.css}"/>
+    <script>
+        function hide() {
+            document.getElementById("flash").hidden = true;
+        }
+    </script>
 </head>
 <body>
 
@@ -17,8 +22,8 @@
         <div th:classappend="${#strings.toLowerCase(flash.status)}" th:text="${flash.message}" class="flash"></div>
     </div>-->
 
-    <div th:fragment="flash" th:if="${flash != null}" class="container">
-        <!--<i class="right material-icons" data-close="">close</i>-->
+    <div th:fragment="flash" th:if="${flash != null}" class="container" id="flash">
+        <i class="right material-icons" data-close="" onclick="hide()">close</i>
         <div th:classappend="${#strings.toLowerCase(flash.status)}" th:text="${flash.message}" class="flash"></div>
     </div>
 
