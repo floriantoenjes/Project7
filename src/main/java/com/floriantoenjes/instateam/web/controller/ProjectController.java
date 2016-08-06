@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,6 +70,7 @@ public class ProjectController {
 
         redirectAttributes.addFlashAttribute("flash", new FlashMessage("Project has been created.",
                 FlashMessage.Status.SUCCESS));
+        project.setStartDate(LocalDateTime.now());
         projectService.save(project);
 
         return "redirect:/index";
