@@ -19,10 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class ProjectController {
@@ -61,10 +58,7 @@ public class ProjectController {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.project", result);
             redirectAttributes.addFlashAttribute("project", project);
-            /*if (project.getRolesNeeded() == null) {
-                redirectAttributes.addFlashAttribute("flash", new FlashMessage("The project needs a role!",
-                        FlashMessage.Status.FAILED));
-            }*/
+
             return "redirect:/add";
         }
 
@@ -107,10 +101,7 @@ public class ProjectController {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.project", result);
             redirectAttributes.addFlashAttribute("project", project);
-            /*if (project.getRolesNeeded() == null) {
-                redirectAttributes.addFlashAttribute("flash", new FlashMessage("The project needs a role!",
-                        FlashMessage.Status.FAILED));
-            }*/
+
             return String.format("redirect:/project/%s/edit", id);
         }
 
@@ -149,29 +140,31 @@ public class ProjectController {
     private Map<Role, Collaborator> getRoleCollaboratorMap(Project project) {
         List<Role> rolesNeeded = project.getRolesNeeded();
         List<Collaborator> collaborators = project.getCollaborators();
-        Map<Role, Collaborator> roleColab = new HashMap<>();
+        Map<Role, Collaborator> roleCollaborator = new LinkedHashMap<>();
 
         for (Role roleNeeded : rolesNeeded) {
-            roleColab.put(roleNeeded,
+            roleCollaborator.put(roleNeeded,
                     collaborators.stream()
-                            .filter( (col)-> col.getRole().getId() == roleNeeded.getId())
+                            .filter( (col)-> col.getRole().getId().equals(roleNeeded.getId()))
                             .findFirst()
                             .orElseGet( () -> {
-                        Collaborator unassigned = new Collaborator();
-                        unassigned.setName("Unassigned");
-                        return unassigned;
-                    }));
+                                Collaborator unassigned = new Collaborator();
+                                unassigned.setName("Unassigned");
+                                return unassigned;
+                            }));
         }
 
-        return roleColab;
+        return roleCollaborator;
     }
 
     private Map<Role, List<Collaborator>> getRoleListMap(Project project, List<Collaborator> collaborators) {
         Map<Role, List<Collaborator>> roleCollaborators = new HashMap<>();
+
         for (Role role : project.getRolesNeeded()) {
             List<Collaborator> coList = new ArrayList<>();
+
             for (Collaborator collaborator : collaborators) {
-                 if (collaborator.getRole() != null && collaborator.getRole().getId() == role.getId()) {
+                if (collaborator.getRole() != null && collaborator.getRole().getId().equals(role.getId())) {
                     coList.add(collaborator);
                 }
             }
@@ -180,12 +173,12 @@ public class ProjectController {
         return roleCollaborators;
     }
 
-    private void assignCollaborators(@RequestParam Map<String, String> params, Project project) {
+    private void assignCollaborators(Map<String, String> params, Project project) {
         project.setCollaborators(new ArrayList<>());
         params.forEach( (key, value) -> {
             int collaboratorId = Integer.parseInt(value);
 
-            // Unassign collaborator
+            // Unassign collaborator if id is 0
             if (collaboratorId == 0) {
                 return;
             }
@@ -193,15 +186,14 @@ public class ProjectController {
             // Check if collaborator is already assigned
             Collaborator collaborator = collaboratorService.findById(collaboratorId);
             List<Collaborator> collaborators = project.getCollaborators();
-            for (Collaborator colabProject : collaborators) {
-                if (colabProject.getId() == collaborator.getId()) {
-                    return;
-                }
+            if (collaborators
+                    .stream()
+                    .anyMatch( col -> col.getId().equals(collaborator.getId()))) {
+                return;
             }
 
-            // Assign collaborator
+            // If not assign collaborator
             project.getCollaborators().add(collaborator);
-
         });
     }
 
