@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -18,7 +19,7 @@ public class Project {
     @Length(min = 5, max = 255, message = "Has to be between 5 and 255 characters!")
     private String description;
     private String status;
-
+    private LocalDateTime startDate;
 
     @NotNull(message = "The project needs at least 1 role!")
     @ManyToMany
@@ -78,4 +79,11 @@ public class Project {
         this.collaborators = collaborators;
     }
 
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
 }
