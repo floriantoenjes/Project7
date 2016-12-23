@@ -1,6 +1,8 @@
 package com.floriantoenjes.instateam.converter;
 
+import com.floriantoenjes.instateam.dao.RoleDao;
 import com.floriantoenjes.instateam.model.Role;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
@@ -13,12 +15,12 @@ import java.util.Set;
 @Component
 public class StringRoleConverter implements Converter<String, Role> {
 
+    @Autowired
+    private RoleDao roleDao;
+
     @Override
     public Role convert(String source) {
-        Role role = new Role();
-        int id = Integer.parseInt(source);
-        role.setId(id);
-        return role;
+        return roleDao.findById(new Integer(source));
     }
 
     @Bean
